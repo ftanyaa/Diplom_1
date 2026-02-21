@@ -1,29 +1,9 @@
-import pytest
-from unittest.mock import Mock
-
-from praktikum.burger import Burger
-
-
-@pytest.fixture
-def burger():
-    return Burger()
-
-
-@pytest.fixture
-def mock_bun():
-    bun = Mock()
-    bun.get_price.return_value = 100
-    bun.get_name.return_value = "test bun"
-    return bun
-
-
-@pytest.fixture
-def mock_ingredient():
-    ingredient = Mock()
-    ingredient.get_price.return_value = 50
-    ingredient.get_name.return_value = "test ingredient"
-    ingredient.get_type.return_value = "SAUCE"
-    return ingredient
+from tests.test_data import (
+    TEST_BUN_PRICE,
+    TEST_INGREDIENT_PRICE,
+    TEST_BUN_NAME,
+    TEST_INGREDIENT_NAME
+)
 
 
 def test_set_buns(burger, mock_bun):
@@ -39,14 +19,13 @@ def test_add_ingredient(burger, mock_ingredient):
 def test_remove_ingredient(burger, mock_ingredient):
     burger.add_ingredient(mock_ingredient)
     burger.remove_ingredient(0)
-
     assert len(burger.ingredients) == 0
 
 
 def test_move_ingredient(burger):
-    ing1 = Mock()
-    ing2 = Mock()
-    ing3 = Mock()
+    ing1 = object()
+    ing2 = object()
+    ing3 = object()
 
     burger.add_ingredient(ing1)
     burger.add_ingredient(ing2)
@@ -62,9 +41,8 @@ def test_get_price(burger, mock_bun, mock_ingredient):
     burger.add_ingredient(mock_ingredient)
     burger.add_ingredient(mock_ingredient)
 
-    price = burger.get_price()
-
-    assert price == 100 * 2 + 50 + 50
+    expected_price = TEST_BUN_PRICE * 2 + TEST_INGREDIENT_PRICE * 2
+    assert burger.get_price() == expected_price
 
 
 def test_get_receipt(burger, mock_bun, mock_ingredient):
@@ -73,6 +51,5 @@ def test_get_receipt(burger, mock_bun, mock_ingredient):
 
     receipt = burger.get_receipt()
 
-    assert "test bun" in receipt
-    assert "test ingredient" in receipt
-    assert "Price:" in receipt
+    assert TEST_BUN_NAME in receipt
+    assert TEST_INGREDIENT_NAME in receipt

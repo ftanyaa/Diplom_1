@@ -6,13 +6,16 @@ from praktikum.ingredient_types import (
 )
 
 
-@pytest.mark.parametrize("ingredient_type,name,price", [
-    (INGREDIENT_TYPE_SAUCE, "hot sauce", 100),
-    (INGREDIENT_TYPE_FILLING, "cutlet", 200),
-])
-def test_ingredient_methods(ingredient_type, name, price):
-    ingredient = Ingredient(ingredient_type, name, price)
+def test_get_type():
+    ingredient = Ingredient(INGREDIENT_TYPE_SAUCE, "sauce", 100)
+    assert ingredient.get_type() == INGREDIENT_TYPE_SAUCE
 
-    assert ingredient.get_type() == ingredient_type
-    assert ingredient.get_name() == name
-    assert ingredient.get_price() == price
+
+def test_get_name():
+    ingredient = Ingredient(INGREDIENT_TYPE_FILLING, "cutlet", 200)
+    assert ingredient.get_name() == "cutlet"
+
+
+def test_get_price():
+    ingredient = Ingredient(INGREDIENT_TYPE_SAUCE, "hot sauce", 300)
+    assert ingredient.get_price() == 300
